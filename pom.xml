@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wcs</groupId>
+	<artifactId>sapadapter</artifactId>
+	<version>1.0</version>
+	<packaging>war</packaging>
+	<name>sapadapter</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sap</groupId>
+			<artifactId>sapjco</artifactId>
+			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+
+		<!-- PROFILE "was8" -->
+		<profile>
+			<id>local</id>
+			<properties>
+				<profile.id>local</profile.id>
+				<jco.config>${basedir}/jco/local/</jco.config>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+
+		<!-- SHANGHAI TEST -->
+		<profile>
+			<id>ipc</id>
+			<properties>
+				<profile.id>ipc</profile.id>
+				<jco.config>${basedir}/jco/ipc/</jco.config>
+			</properties>
+		</profile>
+		<!-- SHANGHAI PRODUCTION -->
+		<profile>
+			<id>prd</id>
+			<properties>
+				<profile.id>prd</profile.id>
+				<jco.config>${basedir}/jco/prd/</jco.config>
+			</properties>
+
+		</profile>
+
+	</profiles>
+
+	<build>
+		<finalName>sapadapter-${profile.id}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>${jco.config}</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<inherited>true</inherited>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>wcs-central</id>
+			<name>WCS Central Repository</name>
+			<url>http://10.229.12.90:8081/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+</project>
+
